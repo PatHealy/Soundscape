@@ -11,6 +11,20 @@ public class Performance : MonoBehaviour
             sources = GetComponentsInChildren<AudioSource>(true);
         }
     }
+
+    private void Start()
+    {
+        if (TimeManager.instance != null)
+        {
+            float offset = TimeManager.instance.GetOffset(sources[0]);
+            foreach (AudioSource a in sources)
+            {
+                a.Play();
+                a.time = offset;
+            }
+        }
+    }
+
     private void OnEnable() {
         if (sources == null) {
             sources = GetComponentsInChildren<AudioSource>(true);

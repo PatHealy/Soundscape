@@ -8,6 +8,7 @@ public class AudioLog : MonoBehaviour
     AudioSource aus;
     GameObject prompt;
     bool playing = false;
+    public float spinSpeed = 0.5f;
 
     AudioSource[] allAudios;
 
@@ -43,11 +44,15 @@ public class AudioLog : MonoBehaviour
     private void FixedUpdate() {
         if (playing && !aus.isPlaying) {
             playing = false;
-            //todo: handle spinning!
+            
             allAudios = FindObjectsOfType<AudioSource>();
             foreach (AudioSource a in allAudios) {
                 a.volume = 1f;
             }
+        }
+
+        if (aus.isPlaying) {
+            transform.Rotate(new Vector3(0f, spinSpeed, 0f));
         }
     }
 

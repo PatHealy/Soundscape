@@ -8,17 +8,19 @@ public class NoteManager : MonoBehaviour
     public static NoteManager instance;
     public GameObject notePrefab;
     public int spaceID;
-    string getURL = "https://www.soundscape.social/get_notes/";
-    string getRecentURL = "https://www.soundscape.social/get_recent_notes_with_id/"; //"http://www.soundscape.social/get_recent_notes/";
-    string postURL = "https://www.soundscape.social/post_note";
-    string nameURL = "https://www.soundscape.social/add_user/";
-    public bool smallMode = false;
+    public string note_server_url;
+    string getURL;
+    string getRecentURL;
+    string postURL;
+    string nameURL;
 
     List<int> ids;
 
-    public GameObject[] curtains;
-
     private void Awake() {
+        getURL = note_server_url + "get_notes/";
+        getRecentURL = note_server_url + "get_recent_notes_with_id/";
+        postURL = note_server_url + "post_note";
+        nameURL = note_server_url + "add_user/";
         instance = this;
         ids = new List<int>();
     }
@@ -27,8 +29,11 @@ public class NoteManager : MonoBehaviour
         InvokeRepeating("RetrieveNotesRepeat", 15f, 15f);
         RetrieveNotes();
 
-        nameURL = nameURL + NameManager.instance.playerName;
-        StartCoroutine(PostName());
+        if (NameManager.instance != null)
+        {
+            nameURL = nameURL + NameManager.instance.playerName;
+            StartCoroutine(PostName());
+        }
     }
 
     public void RetrieveNotes() {
@@ -47,10 +52,9 @@ public class NoteManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         using (UnityWebRequest webRequest = UnityWebRequest.Get(fullUrl)) {
             yield return webRequest.SendWebRequest();
-            if (webRequest.isNetworkError) {
+            if (webRequest.result == UnityWebRequest.Result.ConnectionError) {
                 Debug.Log("Connection failed");
             } else {
-                //Debug.Log(webRequest.downloadHandler.text);
                 NotePull np = JsonUtility.FromJson<NotePull>(webRequest.downloadHandler.text);
                 PlaceNotes(np.notes);
             }
@@ -68,8 +72,7 @@ public class NoteManager : MonoBehaviour
                     CreateNote(note.content, new Vector3(x, y, z), note.id);
                     ids.Add(note.id);
                     if (Time.time > 5f) {
-                        Debug.Log("Updating chat!");
-                        ChatManager.instance.AddNote(PlayerNameManager.instance.GetName(note.ip) + note.content.Replace("/small",""));
+                        ChatManager.instance.AddNote(PlayerNameManager.instance.GetName(note.ip) + note.content);
                     }
                 }
             } catch {
@@ -87,7 +90,8 @@ public class NoteManager : MonoBehaviour
         form.AddField("content", txt);
         using (UnityWebRequest webRequest = UnityWebRequest.Post(postURL, form)) {
             yield return webRequest.SendWebRequest();
-            if (webRequest.isNetworkError) {
+            if (webRequest.result == UnityWebRequest.Result.ConnectionError)
+            {
                 Debug.Log("Connection failed");
             } else {
                 Debug.Log(webRequest.downloadHandler.text);
@@ -96,27 +100,13 @@ public class NoteManager : MonoBehaviour
     }
 
     public void PostNote(string txt, Vector3 loc) {
-        if (txt == "musicircus") {
-            foreach (GameObject g in curtains) {
-                g.SetActive(false);
-            }
-        } else {
-            GameObject n = Instantiate(notePrefab, loc, transform.rotation, transform);
-            if (smallMode) {
-                txt = txt + "/small";
-                n.transform.localScale = Vector3.one * 0.02f;
-            }
-            n.GetComponent<Note>().SetUp(txt.Replace("/small",""));
-            StartCoroutine(PublishNote(txt, loc));
-        }
+        GameObject n = Instantiate(notePrefab, loc, transform.rotation, transform);
+        n.GetComponent<Note>().SetUp(txt);
+        StartCoroutine(PublishNote(txt, loc));
     }
 
     public void CreateNote(string txt, Vector3 loc, int id) {
         GameObject n = Instantiate(notePrefab, loc, transform.rotation, transform);
-        if (txt.Contains("/small")) {
-            n.transform.localScale = Vector3.one * 0.02f;
-            txt = txt.Replace("/small", "");
-        }
         n.GetComponent<Note>().SetUp(txt, id);
     }
 
@@ -124,7 +114,8 @@ public class NoteManager : MonoBehaviour
         yield return new WaitForFixedUpdate();
         using (UnityWebRequest webRequest = UnityWebRequest.Get(nameURL)) {
             yield return webRequest.SendWebRequest();
-            if (webRequest.isNetworkError) {
+            if (webRequest.result == UnityWebRequest.Result.ConnectionError)
+            {
                 Debug.Log("Connection failed");
             } else {
                 Debug.Log(webRequest.downloadHandler.text);

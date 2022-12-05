@@ -1,14 +1,11 @@
 ﻿using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using Unity.Netcode;
+using Unity.Netcode.Components;
 
-/// <summary>
-/// Simple no-nonsense FPS controller for use in demos. It's not very refined, but it's simple.
-/// 
-/// (The 5.x and newer controllers are pretty heavy to include for a demo.)
-/// </summary>
 [RequireComponent(typeof(Rigidbody))]
-public class SimpleFPSController : MonoBehaviour {
+public class SimpleFPSController : NetworkBehaviour {
 
 	public float lookSpeed = 200;
 	public float moveSpeed = 10;
@@ -43,21 +40,29 @@ public class SimpleFPSController : MonoBehaviour {
 		//Cursor.lockState = CursorLockMode.Locked;
 	}
 
-	public void Start() {
-		isLocalPlayer = (gameObject.name == "LocalPlayer");
-		if (!isLocalPlayer) {
+	public override void OnNetworkSpawn()
+	{
+		base.OnNetworkSpawn();
+		
+		isLocalPlayer = IsClient;
+		enabled = isLocalPlayer;
+		if (!IsOwner)
+		{
 			this.enabled = false;
 			body.useGravity = false;
 			Destroy(noteField);
 			Destroy(c);
-		} else {
-			if (NoteManager.instance != null) {
-				inputField = NoteManager.instance.gameObject.GetComponentInChildren<TMP_InputField>(true);
-			}
-			initialLoc = prevLoc = transform.position;
-			initialRoc = prevRoc = transform.rotation;
+			enabled = false;
+			return;
 		}
-    }
+
+		if (NoteManager.instance != null)
+		{
+			inputField = NoteManager.instance.gameObject.GetComponentInChildren<TMP_InputField>(true);
+		}
+		initialLoc = prevLoc = transform.position;
+		initialRoc = prevRoc = transform.rotation;
+	}
 
 	public void Update() {
 		//jump
@@ -160,13 +165,8 @@ public class SimpleFPSController : MonoBehaviour {
 			if (moveWish.magnitude > 1) moveWish = moveWish.normalized;
 			if (horizVel.magnitude > moveSpeed && Physics.gravity.y <= -9f) return;
 
-			if (Physics.gravity.y > -9f) {
-				moveWish = moveWish * 2f;
-			}
-
 			//local to global
 			moveWish = transform.TransformVector(moveWish);
-
 			var force = moveWish * moveForce * Time.fixedDeltaTime;
 
 			if (force.magnitude > 0) {

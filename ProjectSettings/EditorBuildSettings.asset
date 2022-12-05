@@ -6,36 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/_Scenes/AsocialCollection1.unity
-    guid: 9a27e1691722a2a4a892246a8633ebca
-  - enabled: 0
-    path: Assets/_Scenes/Asocial1.unity
-    guid: 291868221c8196842ba6d5e4dc4c6834
-  - enabled: 0
-    path: Assets/_Scenes/Asocial2.unity
-    guid: 20fe203d380ebd746895e7beaad4de66
-  - enabled: 0
-    path: Assets/_Scenes/Asocial3.unity
-    guid: 28ff8733462babd4c9c218464f01ab9c
-  - enabled: 0
     path: Assets/_Scenes/Launcher.unity
     guid: bff77b01b50254edbb6edeeaba5ae8b3
   - enabled: 1
-    path: Assets/_Scenes/ExperimentLauncher.unity
-    guid: 49a90d6c3365b4b4da8f560e2845fa89
-  - enabled: 1
-    path: Assets/_Scenes/Soundscape2.unity
-    guid: 009517a7d15452540a754d18fb341913
-  - enabled: 0
-    path: Assets/_Scenes/Soundscape1.unity
+    path: Assets/_Scenes/Soundscape.unity
     guid: 7e5c1ce8c7f68524b89a39c75a866758
-  - enabled: 0
-    path: Assets/_Scenes/Soundscape3.unity
-    guid: 792376f10f62aba49b0f70c3dc382507
-  - enabled: 0
-    path: Assets/AudioVisualizer/Scenes/Demo.unity
-    guid: b777f5ad612d29543ac01774814aa4d6
-  - enabled: 0
-    path: Assets/_Scenes/OneOffPresentation.unity
-    guid: 546163a7c182f054cacdc828bc634e7f
   m_configObjects: {}

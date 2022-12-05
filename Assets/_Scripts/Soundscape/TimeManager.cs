@@ -9,21 +9,15 @@ public class TimeManager : MonoBehaviour
     public static TimeManager instance;
     public System.DateTime startTime;
     public int year, month, day, hour, minute, second;
-    public TextMeshPro timer1;
-    public TextMeshPro timer2;
-    public GameObject curtains;
+    public bool startToday = false;
 
     private void Awake() {
         instance = this;
         startTime = new System.DateTime(year, month, day, hour, minute, second);
-        if (SceneManager.GetActiveScene().name.Contains("Asocial")) {
-            startTime = System.DateTime.UtcNow;
-        }
-        double timeDif = CalculateTimeDifference().TotalSeconds;
-        Debug.Log(timeDif);
-        if (timeDif < 0) {
-            //Debug.Log("Started timer");
-            StartCoroutine(StartSequence());
+
+        if (startToday) {
+            System.DateTime now = System.DateTime.UtcNow;
+            startTime = new System.DateTime(now.Year, now.Month, now.Day, hour, minute, second);
         }
     }
 
@@ -36,24 +30,7 @@ public class TimeManager : MonoBehaviour
     }
 
     public float GetOffset(AudioSource a) {
-        //Debug.Log("Getting offset!");
         double timeDif = CalculateTimeDifference().TotalSeconds;
         return (float)(((timeDif % a.clip.length) + a.clip.length) % a.clip.length);
-    }
-
-    IEnumerator StartSequence() {
-        curtains.SetActive(true);
-        yield return new WaitForEndOfFrame();
-        System.TimeSpan ts = -CalculateTimeDifference();
-        while (ts.TotalSeconds > 0) {
-            timer1.text = ts.ToString().Substring(0, ts.ToString().LastIndexOf("."));
-            timer2.text = timer1.text;
-            yield return new WaitForSeconds(1f);
-            ts = -CalculateTimeDifference();
-        }
-
-        timer1.text = "";
-        timer2.text = timer1.text;
-        curtains.SetActive(false);
     }
 }

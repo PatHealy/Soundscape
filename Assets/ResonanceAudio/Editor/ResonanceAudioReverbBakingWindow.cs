@@ -105,7 +105,7 @@ public class ResonanceAudioReverbBakingWindow : EditorWindow {
 #else
     EditorApplication.playmodeStateChanged = OnSceneOrModeSwitch;
 #endif  // UNITY_2017_2_OR_NEWER
-    SceneView.onSceneGUIDelegate += OnSceneGUI;
+    SceneView.duringSceneGui += OnSceneGUI;
   }
 
   void OnDisable() {

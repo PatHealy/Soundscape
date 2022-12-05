@@ -10,7 +10,6 @@ public class ChatManager : MonoBehaviour
     TextMeshProUGUI txt;
     bool chatActive = false;
     string[] notes;
-    int locks = 0;
 
     private void Start() {
         instance = this;
@@ -22,12 +21,6 @@ public class ChatManager : MonoBehaviour
     void ShiftNotes() {
         for (int i = notes.Length - 1; i > 0; i--) {
             notes[i] = notes[i - 1];
-        }
-    }
-
-    void PrintNotes() {
-        for (int i = 0; i < notes.Length; i++) {
-            Debug.Log(notes[i]);
         }
     }
 
