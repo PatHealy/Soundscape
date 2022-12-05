@@ -24,7 +24,7 @@ Here's what you'll need to do:
 - Take the public IP of the 'droplet' and put it as the 'Address' in the `UnityTransport` connection data. Set the port to `7777` and Server Listen Address to `0.0.0.0`
 - Make two builds of the game: (1) set the `NetworkInstancer` state to 'Server' and make a Dedicated Server on Linux build, (2) set the `NetworkInstancer` state to 'Client' and make a standalone build for Windows (or whatever platform you want the client to connect from)
 - Use scp to upload your server build to your DigitalOcean droplet
-- SSH into your droplet (DigitalOcean makes this super easy with their in-browser console) and run your server executable
+- SSH into your droplet (DigitalOcean makes this super easy with their in-browser console) and run your server executable (keep it running after your ssh session by running it with `nohup <executable-name> &`)
 - If you run the client, you should be able to connect! 
 
 
