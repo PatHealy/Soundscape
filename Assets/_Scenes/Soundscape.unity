@@ -366,7 +366,7 @@ MonoBehaviour:
   m_MaxConnectAttempts: 60
   m_DisconnectTimeoutMS: 30000
   ConnectionData:
-    Address: 167.172.144.150
+    Address: 127.0.0.1
     Port: 7777
     ServerListenAddress: 0.0.0.0
   DebugSimulator:
@@ -385,7 +385,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc6fc4678492fd944b86197fc42ab5fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  state: 2
+  state: 1
 --- !u!1 &322724904
 GameObject:
   m_ObjectHideFlags: 0
@@ -1553,7 +1553,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &919270185
 Transform:
   m_ObjectHideFlags: 0
@@ -1585,7 +1585,7 @@ MonoBehaviour:
   notePrefab: {fileID: 7338608825862397169, guid: e32d70bc1f63dda45a854b7deb6dfeeb,
     type: 3}
   spaceID: 4
-  note_server_url: https://www.soundscape.social/
+  note_server_url: 
 --- !u!1 &924128741
 GameObject:
   m_ObjectHideFlags: 0
