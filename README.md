@@ -1,11 +1,11 @@
 # Soundscape
 
-Developed in Unity 2021.3.2f1
+Developed in Unity 2021.3.2f1. This does not include the server code for the Soundscape note system -- I'll release that code soon
 
 
 ## How to test it
 
-Open up the `Soundscape` scene. This is the example scene. If you just run the scene, it will launch in `host` mode -- running a server and a client at the same time on localhost. If you run a second client on the same machine, it should connect and you'll have two players playing together!
+Open up the `Soundscape` scene. This is the example scene. If you just run the scene, it will launch in `host` mode -- running a server and a client at the same time on localhost. If you run a second client on the same machine, it should connect and you'll have two players playing together! 
 
 The game can run in server, client, or host mode. If you look on the `NetworkManager` gameobject and down to the `NetworkInstancer` component, you'll notice a drop-down that makes toggling behind these super easy. 
 
